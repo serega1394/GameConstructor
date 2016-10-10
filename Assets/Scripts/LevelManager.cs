@@ -4,6 +4,7 @@ using System.Collections;
 public class LevelManager : MonoBehaviour {
 
 	private int levelNumber = 0;
+	private int lastLevel = 3;
 
 	public GameObject basket;
 	public GameObject sortItem;
@@ -37,7 +38,11 @@ public class LevelManager : MonoBehaviour {
 
 	private void clearCurrentLevel()
 	{ 
-	
+		foreach (object element in levelObjects)
+		{
+			Destroy((GameObject)element);
+		}
+		levelObjects.Clear();
 	}
 
 	public void setCurrentLevel(int newCurrentLevel)
@@ -185,113 +190,30 @@ public class LevelManager : MonoBehaviour {
 			currentSortItem.GetComponent<SpriteRenderer>().sprite = sortItems[8];
 			levelObjects.Add(currentSortItem);
 		}
-
-		else if (levelNumber == 4)
-		{
-
-		}
-		else if (levelNumber == 5)
-		{
-
-		}
-		else if (levelNumber == 6)
-		{
-
-		}
-		else if (levelNumber == 7)
-		{
-
-		}
-		else if (levelNumber == 8)
-		{
-
-		}
-		else if (levelNumber == 9)
-		{
-
-		}
-		else if (levelNumber == 10)
-		{ 
-			currentBasket = (GameObject)Instantiate(basket, new Vector3(-400, -300, 0), Quaternion.identity);
-			currentBasket.GetComponent<SpriteRenderer>().sprite = baskets[0];
-			levelObjects.Add(currentBasket);
-			//Destroy(currentBasket);
-
-			currentBasket = (GameObject)Instantiate(basket, new Vector3(400, -300, 0), Quaternion.identity);
-			currentBasket.GetComponent<SpriteRenderer>().sprite = baskets[1];
-			levelObjects.Add(currentBasket);
-
-			currentSortItem = (GameObject)Instantiate(sortItem, new Vector3(-500, 300, 0), Quaternion.identity);
-			currentSortItem.GetComponent<SpriteRenderer>().sprite = sortItems[6];
-			levelObjects.Add(currentSortItem);
-
-			currentSortItem = (GameObject)Instantiate(sortItem, new Vector3(-400, 0, 0), Quaternion.identity);
-			currentSortItem.GetComponent<SpriteRenderer>().sprite = sortItems[3];
-			levelObjects.Add(currentSortItem);
-
-			currentSortItem = (GameObject)Instantiate(sortItem, new Vector3(-250, 150, 0), Quaternion.identity);
-			currentSortItem.GetComponent<SpriteRenderer>().sprite = sortItems[7];
-			levelObjects.Add(currentSortItem);
-
-			currentSortItem = (GameObject)Instantiate(sortItem, new Vector3(0, 0, 0), Quaternion.identity);
-			currentSortItem.GetComponent<SpriteRenderer>().sprite = sortItems[4];
-			levelObjects.Add(currentSortItem);
-
-			currentSortItem = (GameObject)Instantiate(sortItem, new Vector3(250, 150, 0), Quaternion.identity);
-			currentSortItem.GetComponent<SpriteRenderer>().sprite = sortItems[5];
-			levelObjects.Add(currentSortItem);
-
-			currentSortItem = (GameObject)Instantiate(sortItem, new Vector3(0, 250, 0), Quaternion.identity);
-			currentSortItem.GetComponent<SpriteRenderer>().sprite = sortItems[1];
-			levelObjects.Add(currentSortItem);
-
-			currentSortItem = (GameObject)Instantiate(sortItem, new Vector3(500, 300, 0), Quaternion.identity);
-			currentSortItem.GetComponent<SpriteRenderer>().sprite = sortItems[2];
-			levelObjects.Add(currentSortItem);
-
-			currentSortItem = (GameObject)Instantiate(sortItem, new Vector3(400, 0, 0), Quaternion.identity);
-			currentSortItem.GetComponent<SpriteRenderer>().sprite = sortItems[0];
-			levelObjects.Add(currentSortItem);
-		}
 	}
 	public void setUpCurrentLevel()
 	{
-		setCurrentLevel(++levelNumber);
+		if (levelNumber < lastLevel) setCurrentLevel(++levelNumber);
 	}
 
 	public void setDownCurrenLevel()
 	{ 
-		if (levelNumber > 0)	setCurrentLevel(--levelNumber);
+		if (levelNumber > 1) setCurrentLevel(--levelNumber);
 	}
 	 
 	void OnMouseDown()
 	{
-		/*
-		//!!!For game constructor
-		mousePos = Input.mousePosition;
-		mousePos.Set(mousePos.x-700,mousePos.y-290,mousePos.z);
-		
-		Instantiate(sortItem, mousePos, Quaternion.identity);
-		*/
 		if (firstFlag)
 		{
 			setCurrentLevel(1);
 			firstFlag = false;
 		}
+		setUpCurrentLevel();
 	}
 
 	//
 	void ControlProgress()
 	{ 
 		
-	}
-
-	private void DestroyLevel()
-	{
-		/*foreach (object element in levelObjects)
-		{
-			Destroy((GameObject)element);
-		}
-		levelObjects.Clear();*/;
 	}
 }
