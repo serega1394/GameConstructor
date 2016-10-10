@@ -19,4 +19,8 @@ public class ItemMove : MonoBehaviour {
 		transform.position = mousePos; //Quaternion.Euler(mousePos);
 		mousePos = Input.mousePosition;
 	}
+	void OnCollisionEnter()
+	{
+		Debug.Log("Hit Somefing!");
+	}
 }
