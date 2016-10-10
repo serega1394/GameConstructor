@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class ItemMove : MonoBehaviour {
+	
+	Vector3 dist;
+	float posX;
+	float posY;
 
-	public Vector3 mousePos = new Vector3();
-	// Use this for initialization
 	void Start () {
 	
 	}
@@ -13,11 +16,17 @@ public class ItemMove : MonoBehaviour {
 	void Update () {
 		
 	}
+
+	void OnMouseDown()
+	{		dist = Camera.main.WorldToScreenPoint(transform.position);
+		posX = Input.mousePosition.x - dist.x;
+		posY = Input.mousePosition.y - dist.y;
+	}
 	void OnMouseDrag()
 	{
-		mousePos.Set(mousePos.x-700,mousePos.y-290,mousePos.z);
-		transform.position = mousePos; //Quaternion.Euler(mousePos);
-		mousePos = Input.mousePosition;
+		Vector3 curPos = new Vector3(Input.mousePosition.x - posX, Input.mousePosition.y - posY, dist.z);
+		Vector3 worldPos = Camera.main.ScreenToWorldPoint(curPos);
+		transform.position = worldPos;
 	}
 	void OnCollisionEnter()
 	{
