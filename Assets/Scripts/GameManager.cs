@@ -5,6 +5,8 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject level;
 	private GameObject levelGO;
+	public GUITexture previousLevelButton;
+	public GUITexture nextLevelButton;
 
 	
 	// Use this for initialization
@@ -18,6 +20,23 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
+		int count = Input.touchCount;
+
+		for (int i = 0; i < count; i++)
+		{
+			Touch touch = Input.GetTouch(1);
+
+			if (previousLevelButton.HitTest(touch.position))
+			{
+				levelGO.GetComponent<LevelManager>().setDownCurrenLevel();
+			}
+
+			if (nextLevelButton.HitTest(touch.position))
+			{
+				levelGO.GetComponent<LevelManager>().setUpCurrentLevel();
+			}
+		}
+
 		if (Input.GetKeyDown(KeyCode.RightArrow))
 		{
 			levelGO.GetComponent<LevelManager>().setUpCurrentLevel();
@@ -26,5 +45,14 @@ public class GameManager : MonoBehaviour {
 		{ 
 			levelGO.GetComponent<LevelManager>().setDownCurrenLevel();
 		}
+	}
+	public void previousLevelButtonClick()
+	{ 
+		levelGO.GetComponent<LevelManager>().setDownCurrenLevel();
+	}
+
+	public void nextLevelButtonClick()
+	{ 
+		levelGO.GetComponent<LevelManager>().setUpCurrentLevel();
 	}
 }

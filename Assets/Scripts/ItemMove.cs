@@ -8,6 +8,8 @@ public class ItemMove : MonoBehaviour {
 	float posX;
 	float posY;
 
+	public string sortType;
+
 	void Start () {
 	
 	}
