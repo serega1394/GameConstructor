@@ -4,21 +4,31 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
 
 	public GameObject level;
+
+	/*TODO
+	 * массив уровней
+	 * */
 	private GameObject levelGO;
+	
 	public GUITexture previousLevelButton;
 	public GUITexture nextLevelButton;
+	public int currentMode;
 
 	
-	// Use this for initialization
+	// === ИНИЦИАЛИЗАЦИЯ ===
 	void Start () {
+
+		gameMode();
+
+		/*TODO
+		 * Создание всех уровней
+		 * */
 		//create level
 		levelGO = (GameObject)Instantiate(level, new Vector3(0,0,0), Quaternion.identity);
 		//levelGO.GetComponent<LevelManager>().setCurrentLevel(1);
-	
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+	void Update()
 	{
 		int count = Input.touchCount;
 
@@ -39,20 +49,56 @@ public class GameManager : MonoBehaviour {
 
 		if (Input.GetKeyDown(KeyCode.RightArrow))
 		{
-			levelGO.GetComponent<LevelManager>().setUpCurrentLevel();
+			if (currentMode == 1) levelGO.GetComponent<LevelManager>().setUpCurrentLevel();
 		}
 		else if (Input.GetKeyDown(KeyCode.LeftArrow))
-		{ 
-			levelGO.GetComponent<LevelManager>().setDownCurrenLevel();
+		{
+			if (currentMode == 1) levelGO.GetComponent<LevelManager>().setDownCurrenLevel();
+		}
+		else if (Input.GetKeyDown(KeyCode.F2))
+		{
+			currentModeChanged();
+		}
+		else if (Input.GetKeyDown(KeyCode.UpArrow))
+		{
+			GetComponent<ConstructorManager>().moreGroupButtonClick();
+		}
+		else if (Input.GetKeyDown(KeyCode.DownArrow))
+		{
+			GetComponent<ConstructorManager>().lessGroupButtonClick();
 		}
 	}
+
+	//=== ПЕРЕКЛЮЧЕНИЕ УРОВНЕЙ ===
 	public void previousLevelButtonClick()
-	{ 
-		levelGO.GetComponent<LevelManager>().setDownCurrenLevel();
+	{
+		if (currentMode == 1) levelGO.GetComponent<LevelManager>().setDownCurrenLevel();
 	}
 
 	public void nextLevelButtonClick()
 	{ 
-		levelGO.GetComponent<LevelManager>().setUpCurrentLevel();
+		if (currentMode == 1) levelGO.GetComponent<LevelManager>().setUpCurrentLevel();
+	}
+
+	//=== ПЕРЕКЛЮЧЕНИЯ РЕЖИМОВ КОНСТРУКТОР/ИГРА ===
+	public void constructorMode()
+	{
+		currentMode = 0;
+		levelGO.GetComponent<LevelManager>().clearCurrentLevel();
+
+		GetComponent<ConstructorManager>().CreateSpritePanel();
+		GetComponent<ConstructorManager>().CreateGroupBoxes(1, true);
+	}
+
+	public void gameMode()
+	{
+		currentMode = 1;
+		GetComponent<ConstructorManager>().DestroyConstructor();
+	}
+
+	public void currentModeChanged()
+	{		if (currentMode == 0) gameMode();
+		else if (currentMode == 1) constructorMode();
+
 	}
 }

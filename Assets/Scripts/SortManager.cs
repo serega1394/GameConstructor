@@ -5,7 +5,6 @@ public class SortManager : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D sortCollision)
 	{
-
 		Debug.Log("HIT!!!");
 
 		int basketSortType = gameObject.GetComponent<SortType>().sortType;

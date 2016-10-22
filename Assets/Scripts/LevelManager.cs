@@ -31,7 +31,7 @@ public class LevelManager : MonoBehaviour {
 		
 	}
 
-	private void clearCurrentLevel()
+	public void clearCurrentLevel()
 	{ 
 		foreach (object element in levelObjects)
 		{
