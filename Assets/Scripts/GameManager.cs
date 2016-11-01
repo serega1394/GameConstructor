@@ -73,11 +73,13 @@ public class GameManager : MonoBehaviour {
 	public void previousLevelButtonClick()
 	{
 		if (currentMode == 1) levelGO.GetComponent<LevelManager>().setDownCurrenLevel();
+		else if (currentMode == 0) GetComponent<ConstructorManager>().previousStep();
 	}
 
 	public void nextLevelButtonClick()
-	{ 
+	{
 		if (currentMode == 1) levelGO.GetComponent<LevelManager>().setUpCurrentLevel();
+		else if (currentMode == 0) GetComponent<ConstructorManager>().nextStep();
 	}
 
 	//=== ПЕРЕКЛЮЧЕНИЯ РЕЖИМОВ КОНСТРУКТОР/ИГРА ===
