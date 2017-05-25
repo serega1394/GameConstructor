@@ -18,6 +18,16 @@ public class PathManager : MonoBehaviour {
 		return GamesDir + gamePathTail + "\\";
 	}
 
+	public static string GetFullLevelFolder(string gamePathTail, int levelNumber)
+	{
+		return GamesDir + gamePathTail + "\\level" + levelNumber.ToString();
+	}
+
+	public static string GetFullGameFolder(int gameNumber)
+	{
+		return GamesDir + "Game" + gameNumber.ToString();
+	}
+
 	public static string GetFullImageFolder(string imagePathTail)
 	{
 		return imgDir + imagePathTail;

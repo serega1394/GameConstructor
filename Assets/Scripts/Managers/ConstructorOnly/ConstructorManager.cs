@@ -157,24 +157,16 @@ public class ConstructorManager : MonoBehaviour {
 		
 	}
 
-	public void CreateLevel(string gameFolder)
+	public void CreateLevel(string gameFolder, int levelNumber)
 	{
-		/*String levelPath = LevelManager.GamesDir + currentGameFolder + "\\" + "level" + scrollLevelsContent.GetComponentsInChildren<Button>().Length.ToString();
+		string levelPath = PathManager.GetFullLevelFolder(gameFolder, levelNumber);
 		System.IO.Directory.CreateDirectory(levelPath);
-		GameObject currentButton = (GameObject)Instantiate(scrollContentButton, new Vector3(0, 0, 0), Quaternion.identity);
-		currentButton.transform.SetParent(scrollLevelsContent.transform);
-		currentButton.GetComponentInChildren<Text>().text = GetPathTail(levelPath);
-		currentButton.GetComponentInChildren<Text>().fontSize = 36;
-		currentButton.AddComponent<ScrollContentButtonMark>();
-		currentButton.GetComponent<ScrollContentButtonMark>().folder = GetPathTail(levelPath);
-		currentButton.GetComponent<ScrollContentButtonMark>().constructorManager = this;
-
-		currentButton.GetComponent<Button>().onClick.AddListener(currentButton.GetComponent<ScrollContentButtonMark>().SetLevel);*/
 	}
 
-	public void CreateGame()
-	{ 
-		
+	public void CreateGame(int gameNumber)
+	{
+		string gamePath = PathManager.GetFullGameFolder(gameNumber);
+		System.IO.Directory.CreateDirectory(gamePath);
 	}
 
 	public void LoadLevelForEdit()

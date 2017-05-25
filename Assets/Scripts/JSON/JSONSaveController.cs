@@ -25,6 +25,7 @@ public class JSONSaveController : MonoBehaviour {
 		Debug.Log("2)" + pos.x.ToString() + " " + pos.y.ToString());
 		string category = item.GetCategory();
 		string sprite = item.GetItemImage();
+
 		int angle = item.GetAngle();
 		int scale = item.GetScale();
 

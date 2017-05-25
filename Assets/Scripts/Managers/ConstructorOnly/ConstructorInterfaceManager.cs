@@ -7,13 +7,12 @@ using System.Collections;
 
 public class ConstructorInterfaceManager : MonoBehaviour
 {
-
 	public Button simpleModeButton;
 	public Button hardModeButton;
 
-	public Button sortingButton;
-	public Button excessButton;
-	public Button correlationButton;
+	public Button sortingGameButton;
+	public Button excessGameButton;
+	public Button correlationGameButton;
 
 	public InputField itemsCountInputField;
 	public InputField groupsCountInputField;
@@ -32,8 +31,10 @@ public class ConstructorInterfaceManager : MonoBehaviour
 	public InputField markInputField;
 	public Button scaleIncButton;
 	public Button scaleDecButton;
-	public InputField xInputField;
-	public InputField yInputField;
+	public Button basketButton;
+	public Button sortItemButton;
+	public Button excessButton;
+	public Button notExcessButton;
 
 	private int SIMPLE_MODE = 0;
 	private int MEDIUM_MODE = 1;
@@ -51,6 +52,8 @@ public class ConstructorInterfaceManager : MonoBehaviour
 	void Start()
 	{
 		SimpleModeButtonClicked();
+
+		SortingGameButtonClicked();
 
 		FillScrollContent(scrollGamesContent, PathManager.GamesDir, "game");
 
@@ -91,9 +94,14 @@ public class ConstructorInterfaceManager : MonoBehaviour
 
 	public void SortingGameButtonClicked()
 	{
-		sortingButton.interactable = false;
-		excessButton.interactable = true;
-		correlationButton.interactable = true;
+		sortingGameButton.interactable = false;
+		excessGameButton.interactable = true;
+		correlationGameButton.interactable = true;
+
+		basketButton.gameObject.SetActive(true);
+		sortItemButton.gameObject.SetActive(true);
+		excessButton.gameObject.SetActive(false);
+		notExcessButton.gameObject.SetActive(false);
 
 		Component[] comps = itemsCountInputField.gameObject.GetComponentsInChildren<Text>();
 		foreach (Text comp in comps)
@@ -110,9 +118,14 @@ public class ConstructorInterfaceManager : MonoBehaviour
 
 	public void ExcessGameButtonClicked()
 	{
-		sortingButton.interactable = true;
-		excessButton.interactable = false;
-		correlationButton.interactable = true;
+		sortingGameButton.interactable = true;
+		excessGameButton.interactable = false;
+		correlationGameButton.interactable = true;
+		notExcessButton.gameObject.SetActive(true);
+
+		basketButton.gameObject.SetActive(false);
+		sortItemButton.gameObject.SetActive(false);
+		excessButton.gameObject.SetActive(true);
 
 		Component[] comps = itemsCountInputField.gameObject.GetComponentsInChildren<Text>();
 		foreach (Text comp in comps)
@@ -132,9 +145,14 @@ public class ConstructorInterfaceManager : MonoBehaviour
 
 	public void CorrelationGameButtonClicked()
 	{
-		sortingButton.interactable = true;
-		excessButton.interactable = true;
-		correlationButton.interactable = false;
+		sortingGameButton.interactable = true;
+		excessGameButton.interactable = true;
+		correlationGameButton.interactable = false;
+
+		basketButton.gameObject.SetActive(false);
+		sortItemButton.gameObject.SetActive(false);
+		excessButton.gameObject.SetActive(false);
+		notExcessButton.gameObject.SetActive(false);
 
 		Component[] comps = itemsCountInputField.gameObject.GetComponentsInChildren<Text>();
 		foreach (Text comp in comps)
@@ -160,9 +178,12 @@ public class ConstructorInterfaceManager : MonoBehaviour
 
 		markInputField.text = selectedItem.GetComponent<Item>().GetMark();
 
-		xInputField.text = ((int)selectedItem.GetComponent<Item>().GetPosition().x).ToString();
+		basketButton.interactable = selectedItem.GetComponent<Item>().GetItemType() != "basket";
 
-		yInputField.text = ((int)selectedItem.GetComponent<Item>().GetPosition().y).ToString();
+		sortItemButton.interactable = selectedItem.GetComponent<Item>().GetItemType() != "sort_item";
+
+		excessButton.interactable = selectedItem.GetComponent<Item>().GetMark() != "excess";
+		notExcessButton.interactable = selectedItem.GetComponent<Item>().GetMark() == "excess";
 	}
 
 	public void AngleIncButtonClicked()
@@ -198,27 +219,46 @@ public class ConstructorInterfaceManager : MonoBehaviour
 		selectedItem.GetComponent<Item>().SetMark(markInputField.text);
 	}
 
-	public void XInputFieldChanged()
+	public void BasketButtonCkicked()
 	{
 		if (!selectedItem) return;
-		if (xInputField.text != "" && yInputField.text != "")
-		{
-			selectedItem.GetComponent<Item>().SetPosition(new Vector3(Convert.ToInt32(xInputField.text), Convert.ToInt32(yInputField.text), 0));
-		}
+
+		basketButton.interactable = !basketButton.interactable;
+		sortItemButton.interactable = !basketButton.interactable;
+
+		selectedItem.GetComponent<Item>().SetType("basket");
 	}
 
-	public void YInputFieldChanged()
-	{
+	public void SortItemButtonClicked()
+	{ 
 		if (!selectedItem) return;
-		if (xInputField.text != "" && yInputField.text != "")
-		{
-			selectedItem.GetComponent<Item>().SetPosition(new Vector3(Convert.ToInt32(xInputField.text), Convert.ToInt32(yInputField.text), 0));
-		}
+
+		sortItemButton.interactable = !sortItemButton.interactable;
+		basketButton.interactable = !sortItemButton.interactable;
+
+		selectedItem.GetComponent<Item>().SetType("sort_item");
+	}
+
+	public void ExcessButtonClicked()
+	{		if (!selectedItem) return;
+
+		excessButton.interactable = !excessButton.interactable;
+		notExcessButton.interactable = !excessButton.interactable;
+		selectedItem.GetComponent<Item>().SetMark("excess");
+	}
+
+	public void NotExcessButtonClicked()
+	{ 
+		if (!selectedItem) return;
+
+		notExcessButton.interactable = !notExcessButton.interactable;
+		excessButton.interactable = !notExcessButton.interactable;
+		selectedItem.GetComponent<Item>().SetMark(selectedItem.GetComponent<Item>().GetCategory());
 	}
 
 	//С КНОПКИ СОХРАНЕНИЯ УРОВНЯ !
-	public void CreateLevelButtonClicked()
-	{
+	//public void ()
+	//{
 		/*if (currentMode == SIMPLE_MODE)
 		{
 			if (itemsCountInputField.text == "" || groupsCountInputField.text == "") return;
@@ -238,7 +278,7 @@ public class ConstructorInterfaceManager : MonoBehaviour
 		{
 			gameObject.GetComponent<ConstructorManager>().HardModeGenerate();
 		}*/
-	}
+	//}
 
 	private void FillScrollContent(GameObject scrollContent, string sourceFolder, string scrollTypeString)
 	{
@@ -291,9 +331,9 @@ public class ConstructorInterfaceManager : MonoBehaviour
 
 	public void CreateSprite(Sprite sprite, Item item)
 	{
-		if (!sortingButton.interactable) item.SetType("sort_item");
-		else if (!excessButton.interactable) item.SetType("excess");
-		else if (!correlationButton.interactable) item.SetType("correlation");
+		if (!sortingGameButton.interactable) item.SetType("sort_item");
+		else if (!excessGameButton.interactable) item.SetType("excess");
+		else if (!correlationGameButton.interactable) item.SetType("correlation");
 		gameObject.GetComponent<ConstructorManager>().CreateItem(sprite, item);
 	}
 
@@ -313,12 +353,18 @@ public class ConstructorInterfaceManager : MonoBehaviour
 	public void CreateLevel()
 	{
 		if (!currentGameButtonGameObject) return;
-		gameObject.GetComponent<ConstructorManager>().CreateLevel(currentGameButtonGameObject.GetComponent<ScrollContentButtonMark>().folder);
+		gameObject.GetComponent<ConstructorManager>().CreateLevel(currentGameButtonGameObject.GetComponent<ScrollContentButtonMark>().folder, scrollLevelsContent.GetComponentsInChildren<Button>().Length);
+
+		ClearScrollContent(scrollLevelsContent);
+		FillScrollContent(scrollLevelsContent, PathManager.GetFullGameFolder(currentGameButtonGameObject.GetComponent<ScrollContentButtonMark>().folder), "level");
 	}
 
 	public void CreateGame()
 	{ 
-		gameObject.GetComponent<ConstructorManager>().CreateGame();
+		gameObject.GetComponent<ConstructorManager>().CreateGame(scrollGamesContent.GetComponentsInChildren<Button>().Length);
+
+		ClearScrollContent(scrollGamesContent);
+		FillScrollContent(scrollGamesContent, PathManager.GamesDir, "game");
 	}
 
 	public void SetGame(ScrollContentButtonMark item)
